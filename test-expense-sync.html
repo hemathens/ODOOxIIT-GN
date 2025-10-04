@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Sync Test</title>
+</head>
+<body>
+    <h1>Expense Synchronization Test</h1>
+    <button onclick="testSync()">Test Expense Sync</button>
+    <div id="output"></div>
+
+    <script>
+        function testSync() {
+            // Clear existing expenses
+            localStorage.removeItem('sharedExpenses');
+            
+            // Test adding an expense
+            const expense = {
+                id: 'exp-test-' + Date.now(),
+                employeeName: 'John Doe',
+                description: 'Business lunch',
+                expenseDate: '2025-10-05',
+                category: 'Food',
+                paidBy: 'Card',
+                remarks: 'Team meeting',
+                originalAmount: 75.50,
+                originalCurrency: 'USD',
+                convertedAmount: 75.50,
+                baseCurrency: 'USD',
+                status: 'Waiting Approval'
+            };
+            
+            // Save to shared storage
+            const expenses = JSON.parse(localStorage.getItem('sharedExpenses') || '[]');
+            expenses.push(expense);
+            localStorage.setItem('sharedExpenses', JSON.stringify(expenses));
+            
+            // Retrieve and display
+            const retrieved = JSON.parse(localStorage.getItem('sharedExpenses') || '[]');
+            document.getElementById('output').innerHTML = 
+                '<h2>Test Results:</h2>' +
+                '<p>Added expense: ' + JSON.stringify(expense) + '</p>' +
+                '<p>Retrieved expenses: ' + JSON.stringify(retrieved) + '</p>';
+        }
+    </script>
+</body>
+</html>

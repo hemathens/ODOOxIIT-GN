@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, Settings, LogOut, User } from "lucide-react";
+import { Bell, Settings, LogOut, User, ArrowLeft } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -211,7 +211,10 @@ export function TopNav({ onNavigate }: { onNavigate?: (tab: string) => void }) {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem className="text-destructive" onClick={onNavigate ? () => {
+                localStorage.removeItem('currentUser');
+                window.location.reload();
+              } : undefined}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
               </DropdownMenuItem>

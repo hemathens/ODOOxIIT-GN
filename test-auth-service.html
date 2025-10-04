@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth Service Test</title>
+</head>
+<body>
+    <h1>Authentication Service Test</h1>
+    <button onclick="testAuth()">Test Authentication Service</button>
+    <div id="output"></div>
+
+    <script>
+        function testAuth() {
+            // Test data
+            const testUsers = [
+                { email: 'admin@company.com', password: 'admin123', role: 'admin' },
+                { email: 'manager@company.com', password: 'manager123', role: 'manager' },
+                { email: 'employee@company.com', password: 'employee123', role: 'employee' }
+            ];
+            
+            // Test login
+            const user = testUsers[0]; // Test with admin user
+            const token = `token_${user.email}_${Date.now()}`;
+            const authData = {
+                user: {
+                    id: '1',
+                    name: 'Test User',
+                    email: user.email,
+                    role: user.role,
+                    token: token
+                },
+                token: token
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('currentUser', JSON.stringify(authData.user));
+            
+            // Retrieve and display
+            const savedToken = localStorage.getItem('authToken');
+            const savedUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            document.getElementById('output').innerHTML = 
+                '<h2>Test Results:</h2>' +
+                '<p>Saved token: ' + token + '</p>' +
+                '<p>Retrieved token: ' + savedToken + '</p>' +
+                '<p>Saved user: ' + JSON.stringify(savedUser) + '</p>';
+        }
+    </script>
+</body>
+</html>

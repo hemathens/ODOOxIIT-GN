@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Info
 } from "lucide-react";
+import { getSharedExpenses, convertToAdminFormat, saveSharedExpenses } from "./utils/expenseSync";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
@@ -164,8 +165,18 @@ const mockExpenses: Expense[] = [
 
 export function ExpensesOverview() {
   const [expenses, setExpenses] = useState<Expense[]>(() => {
-    const savedExpenses = localStorage.getItem('expenses');
-    return savedExpenses ? JSON.parse(savedExpenses) : mockExpenses;
+    // Get mock expenses from localStorage or use default mock data
+    const savedMockExpenses = localStorage.getItem('expenses');
+    const baseExpenses = savedMockExpenses ? JSON.parse(savedMockExpenses) : mockExpenses;
+    
+    // Get shared expenses from employee submissions
+    const sharedExpenses = getSharedExpenses();
+    
+    // Convert shared expenses to the format used in ExpensesOverview
+    const convertedSharedExpenses = sharedExpenses.map(convertToAdminFormat);
+    
+    // Combine both sets of expenses
+    return [...baseExpenses, ...convertedSharedExpenses];
   });
   const [searchQuery, setSearchQuery] = useState<string>(() => {
     const savedSearch = localStorage.getItem('expenseSearchQuery');
@@ -180,10 +191,38 @@ export function ExpensesOverview() {
     return savedCategory || "all";
   });
 
-  // Save expenses to localStorage whenever they change
+  // Save only the mock expenses to localStorage (not shared expenses)
   useEffect(() => {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
+    // Filter out shared expenses (they have a different ID format)
+    const mockExpensesOnly = expenses.filter(exp => !exp.id.startsWith('exp-'));
+    localStorage.setItem('expenses', JSON.stringify(mockExpensesOnly));
   }, [expenses]);
+
+  // Refresh shared expenses periodically
+  useEffect(() => {
+    const refreshSharedExpenses = () => {
+      // Get shared expenses from employee submissions
+      const sharedExpenses = getSharedExpenses();
+      
+      // Convert shared expenses to the format used in ExpensesOverview
+      const convertedSharedExpenses = sharedExpenses.map(convertToAdminFormat);
+      
+      // Get mock expenses from localStorage or use default mock data
+      const savedMockExpenses = localStorage.getItem('expenses');
+      const baseExpenses = savedMockExpenses ? JSON.parse(savedMockExpenses) : mockExpenses;
+      
+      // Combine both sets of expenses
+      setExpenses([...baseExpenses, ...convertedSharedExpenses]);
+    };
+
+    // Refresh on mount
+    refreshSharedExpenses();
+
+    // Set up interval to refresh periodically
+    const interval = setInterval(refreshSharedExpenses, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Save filter states to localStorage
   useEffect(() => {
@@ -228,6 +267,15 @@ export function ExpensesOverview() {
         exp.id === expenseId ? { ...exp, status: "Approved" as ExpenseStatus } : exp
       ));
       
+      // Update shared expenses if this is a shared expense
+      if (expenseId.startsWith('exp-')) {
+        const allSharedExpenses = getSharedExpenses();
+        const updatedSharedExpenses = allSharedExpenses.map((exp: any) => 
+          exp.id === expenseId ? { ...exp, status: "Approved" } : exp
+        );
+        saveSharedExpenses(updatedSharedExpenses);
+      }
+      
       // Show notification
       toast.success("Expense Approved", {
         description: `${expense.employeeName}'s expense has been approved`,
@@ -254,6 +302,15 @@ export function ExpensesOverview() {
         exp.id === expenseId ? { ...exp, status: "Rejected" as ExpenseStatus } : exp
       ));
       
+      // Update shared expenses if this is a shared expense
+      if (expenseId.startsWith('exp-')) {
+        const allSharedExpenses = getSharedExpenses();
+        const updatedSharedExpenses = allSharedExpenses.map((exp: any) => 
+          exp.id === expenseId ? { ...exp, status: "Rejected" } : exp
+        );
+        saveSharedExpenses(updatedSharedExpenses);
+      }
+      
       // Show notification
       toast.error("Expense Rejected", {
         description: `${expense.employeeName}'s expense has been rejected`,
@@ -272,6 +329,17 @@ export function ExpensesOverview() {
       localStorage.setItem('notifications', JSON.stringify([...notifications, newNotification]));
     }
   };
+
+  // Refresh expenses when component mounts
+  useEffect(() => {
+    // Trigger initial refresh
+    const event = new CustomEvent('refreshExpenses');
+    window.dispatchEvent(event);
+  }, []);
+
+  // Add import for saveSharedExpenses
+  // (This should be at the top with other imports, but we're adding it here for clarity)
+  // import { getSharedExpenses, convertToAdminFormat, saveSharedExpenses } from "./utils/expenseSync";
 
   const getStatusBadge = (status: ExpenseStatus) => {
     switch (status) {

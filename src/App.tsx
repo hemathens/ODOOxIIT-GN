@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { LoginPage } from "./components/LoginPage";
+import { ManagerDashboard } from "./components/ManagerDashboard";
+import { EmployeeDashboard } from "./components/EmployeeDashboard";
 import { TopNav } from "./components/TopNav";
 import { Sidebar } from "./components/Sidebar";
 import { UserManagement } from "./components/UserManagement";
@@ -7,6 +10,7 @@ import { DashboardOverview } from "./components/DashboardOverview";
 import { ExpensesOverview } from "./components/ExpensesOverview";
 import { UserProfile } from "./components/UserProfile";
 import { ProfileProvider } from "./contexts/ProfileContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 // Stateful Settings component with localStorage persistence
 const Settings = () => {
@@ -162,18 +166,58 @@ const Settings = () => {
   );
 };
 
-export default function App() {
+function AppContent() {
+  const { user: authUser, logout } = useAuth();
+  const [currentUser, setCurrentUser] = useState<{ name: string; role: string } | null>(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [activeTab, setActiveTab] = useState(() => {
     const savedTab = localStorage.getItem('activeTab');
     return savedTab || "Users & Roles";
   });
+
+  // Save current user to localStorage whenever it changes
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('currentUser');
+    }
+  }, [currentUser]);
 
   // Save active tab to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab]);
 
+  const handleLogin = (user: { name: string; role: string }) => {
+    setCurrentUser(user);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('activeTab');
+    logout();
+  };
+
   const renderContent = () => {
+    // If user is not logged in, show login page
+    if (!currentUser) {
+      return <LoginPage onLogin={handleLogin} />;
+    }
+
+    // If user is a manager, show manager dashboard
+    if (currentUser.role === "manager") {
+      return <ManagerDashboard managerName={currentUser.name} onLogout={handleLogout} />;
+    }
+
+    // If user is an employee, show employee dashboard
+    if (currentUser.role === "employee") {
+      return <EmployeeDashboard employeeName={currentUser.name} onLogout={handleLogout} />;
+    }
+
+    // If user is admin, show admin portal
     switch (activeTab) {
       case "Dashboard":
         return <DashboardOverview />;
@@ -192,6 +236,40 @@ export default function App() {
     }
   };
 
+  // If user is not logged in, show login page without sidebar
+  if (!currentUser) {
+    return (
+      <ProfileProvider>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+          {renderContent()}
+        </div>
+      </ProfileProvider>
+    );
+  }
+
+  // If user is a manager, show manager dashboard without sidebar
+  if (currentUser.role === "manager") {
+    return (
+      <ProfileProvider>
+        <div className="min-h-screen bg-background">
+          {renderContent()}
+        </div>
+      </ProfileProvider>
+    );
+  }
+
+  // If user is an employee, show employee dashboard without sidebar
+  if (currentUser.role === "employee") {
+    return (
+      <ProfileProvider>
+        <div className="min-h-screen bg-background">
+          {renderContent()}
+        </div>
+      </ProfileProvider>
+    );
+  }
+
+  // If user is admin, show admin portal with sidebar
   return (
     <ProfileProvider>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -212,5 +290,13 @@ export default function App() {
         </footer>
       </div>
     </ProfileProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
