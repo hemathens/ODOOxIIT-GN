@@ -14,6 +14,13 @@
 
 </div>
 
+** Team NeoByte **
+
+[Hem Patel](https://github.com/hemathens) 
+[Karmadeepsinh Gohil](https://github.com/kdgohil01)
+[Harsshdeepsinh Jadeja](https://github.com/harshdeepsinhjadeja27)
+[Meet Sanchaniya](https://github.com/meet-4)
+
 ---
 
 ## 📋 Table of Contents
@@ -514,7 +521,7 @@ For support, questions, or feedback:
 
 <div align="center">
 
-**Built with ❤️ by the Hemathens Team**
+**Built with ❤️ by the Team NeoByte**
 
 *Expense Manager © 2025 – Secure Expense Tracking*
 
