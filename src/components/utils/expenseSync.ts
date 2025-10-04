@@ -98,7 +98,8 @@ export const convertToManagerFormat = (expense: SharedExpense) => {
     description: expense.description || '',
     date: expense.expenseDate || new Date().toLocaleDateString(),
     approvalComments: '',
-    status: expense.status === 'Waiting Approval' ? 'pending' : 
+    status: expense.status === 'Draft' ? 'draft' :
+            expense.status === 'Waiting Approval' ? 'pending' : 
             expense.status === 'Approved' ? 'approved' : 
             expense.status === 'Rejected' ? 'rejected' : 'pending'
   };

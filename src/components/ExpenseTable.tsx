@@ -29,15 +29,15 @@ interface ExpenseTableProps {
 const getStatusColor = (status: Expense['status']) => {
   switch (status) {
     case 'Draft':
-      return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+      return 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200';
     case 'Waiting Approval':
-      return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
+      return 'bg-amber-100 text-amber-700 border-amber-300 hover:bg-amber-200';
     case 'Approved':
-      return 'bg-green-100 text-green-800 hover:bg-green-200';
+      return 'bg-emerald-100 text-emerald-700 border-emerald-300 hover:bg-emerald-200';
     case 'Rejected':
-      return 'bg-red-100 text-red-800 hover:bg-red-200';
+      return 'bg-rose-100 text-rose-700 border-rose-300 hover:bg-rose-200';
     default:
-      return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+      return 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200';
   }
 };
 

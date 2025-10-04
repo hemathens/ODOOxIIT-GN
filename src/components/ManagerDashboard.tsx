@@ -98,9 +98,8 @@ export function ManagerDashboard({ managerName, onLogout }: ManagerDashboardProp
   const [expenses, setExpenses] = useState(() => {
     // Get all expenses from shared storage
     const allExpenses = getSharedExpenses();
-    // Filter to only show expenses that need approval (not Draft status)
+    // Show all expenses including drafts for manager review
     return allExpenses
-      .filter((exp: any) => exp.status !== 'Draft')
       .map(convertToManagerFormat);
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -140,7 +139,6 @@ export function ManagerDashboard({ managerName, onLogout }: ManagerDashboardProp
     const refreshExpenses = () => {
       const allExpenses = getSharedExpenses();
       const updatedExpenses = allExpenses
-        .filter((exp: any) => exp.status !== 'Draft')
         .map(convertToManagerFormat);
       setExpenses(updatedExpenses);
     };
@@ -203,8 +201,8 @@ export function ManagerDashboard({ managerName, onLogout }: ManagerDashboardProp
       </nav>
       <div className="p-4 border-t">
         <Button
-          variant="ghost"
-          className="w-full justify-start text-destructive hover:text-destructive"
+          variant="destructive"
+          className="w-full justify-start"
           onClick={onLogout}
         >
           <LogOut className="mr-2 h-4 w-4" />
@@ -249,9 +247,9 @@ export function ManagerDashboard({ managerName, onLogout }: ManagerDashboardProp
           </div>
           <div className="flex items-center gap-2">
             <Button 
-              variant="destructive" 
+              variant="outline" 
               onClick={onLogout}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-destructive border-destructive hover:bg-destructive/10"
             >
               <LogOut className="h-4 w-4" />
               Logout

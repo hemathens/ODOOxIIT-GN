@@ -38,7 +38,7 @@ export interface Expense {
   description: string;
   date: string;
   approvalComments: string;
-  status: "pending" | "approved" | "rejected";
+  status: "draft" | "pending" | "approved" | "rejected";
 }
 
 interface TeamExpensesTableProps {
@@ -115,22 +115,28 @@ export function TeamExpensesTable({ expenses, onUpdateExpense }: TeamExpensesTab
 
   const getStatusBadge = (status: Expense["status"]) => {
     switch (status) {
+      case "draft":
+        return (
+          <Badge className="bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200">
+            📝 Draft
+          </Badge>
+        );
       case "pending":
         return (
-          <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
-            Pending
+          <Badge className="bg-amber-100 text-amber-700 border-amber-300 hover:bg-amber-200">
+            ⏳ Pending
           </Badge>
         );
       case "approved":
         return (
-          <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white">
-            Approved
+          <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300 hover:bg-emerald-200">
+            ✅ Approved
           </Badge>
         );
       case "rejected":
         return (
-          <Badge className="bg-rose-500 hover:bg-rose-600 text-white">
-            Rejected
+          <Badge className="bg-rose-100 text-rose-700 border-rose-300 hover:bg-rose-200">
+            ❌ Rejected
           </Badge>
         );
     }
@@ -225,7 +231,7 @@ export function TeamExpensesTable({ expenses, onUpdateExpense }: TeamExpensesTab
                   </TableCell>
                   <TableCell>{getStatusBadge(expense.status)}</TableCell>
                   <TableCell className="text-right">
-                    {expense.status === "pending" ? (
+                    {expense.status === "pending" || expense.status === "draft" ? (
                       <div className="flex justify-end gap-2">
                         <Button
                           size="sm"
