@@ -14,12 +14,14 @@
 
 </div>
 
-** Team NeoByte **
+**Team NeoByte**
 
-[Hem Patel](https://github.com/hemathens) 
-[Karmadeepsinh Gohil](https://github.com/kdgohil01)
-[Harsshdeepsinh Jadeja](https://github.com/harshdeepsinhjadeja27)
-[Meet Sanchaniya](https://github.com/meet-4)
+| Role                            |                 Name |                                                                GitHub                                                               |                                                                           LinkedIn                                                                           |
+| ------------------------------- | -------------------: | :---------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Team Leader / Backend Developer |            Hem Patel |             [![GitHub](https://img.shields.io/badge/GitHub-hemathens-181717?logo=github)](https://github.com/hemathens)             |             [![LinkedIn](https://img.shields.io/badge/LinkedIn-Hem%20Ajit%20Patel-0A66C2?logo=linkedin)](https://www.linkedin.com/in/hem-patel19)            |
+| Frontend Developer              | Harshdeepsinh Jadeja | [![GitHub](https://img.shields.io/badge/GitHub-harshdeepsinhjadeja27-181717?logo=github)](https://github.com/harshdeepsinhjadeja27) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshdeepsinh%20Jadeja-0A66C2?logo=linkedin)](https://www.linkedin.com/in/jadeja-harshdeepsinh-74ab16321) |
+| System Architect                |  Karmadeepsinh Gohil |             [![GitHub](https://img.shields.io/badge/GitHub-kdgohil01-181717?logo=github)](https://github.com/kdgohil01)             |  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Karmadeepsinh%20Gohil-0A66C2?logo=linkedin)](https://www.linkedin.com/in/karmadeepsinh-gohil-31484230a)  |
+| Documentation                   |      Meet Sanchaniya |                [![GitHub](https://img.shields.io/badge/GitHub-meet-4-181717?logo=github)](https://github.com/meet-4)                |      [![LinkedIn](https://img.shields.io/badge/LinkedIn-Meet%20Sanchaniya-0A66C2?logo=linkedin)](https://www.linkedin.com/in/meet-sanchaniya-2a4193338)      |
 
 ---
 
