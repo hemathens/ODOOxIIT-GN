@@ -1,4 +1,4 @@
-# Admin Portal - Expense Management System
+# Expense Management System - Expense Flow
 
 <div align="center">
 
@@ -44,7 +44,7 @@
 
 ## 🌟 Overview
 
-The **Admin Portal - Expense Management System** is a modern, role-based web application designed to streamline expense tracking, approval workflows, and financial management across organizations. Built with cutting-edge technologies, it provides distinct interfaces for Admins, Managers, and Employees, each tailored to their specific needs.
+The **Expense Flow** is a modern, role-based web application designed to streamline expense tracking, approval workflows, and financial management across organizations. Built with cutting-edge technologies, it provides distinct interfaces for Admins, Managers, and Employees, each tailored to their specific needs.
 
 ### Key Highlights
 
